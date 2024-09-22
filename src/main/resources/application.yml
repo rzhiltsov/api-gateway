@@ -1,0 +1,57 @@
+server:
+  port: ${API_GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      default-filters:
+        - RewritePath=abs, api/v1
+
+      routes:
+        - id: auth_service_route
+          predicates:
+            - Path=/abs/authentication-service/**
+          uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+
+        - id: user_service_route
+          predicates:
+            - Path=/abs/user-service/**
+          uri: ${USER_SERVICE_URL:http://localhost:8082}
+
+        - id: info_service_route
+          predicates:
+            - Path=/abs/info-service/**
+          uri: ${INFO_SERVICE_URL:http://localhost:8083}
+
+        - id: client_service_route
+          predicates:
+            - Path=/abs/client-service/**
+          uri: ${CLIENT_SERVICE_URL:http://localhost:8084}
+
+        - id: news_service_route
+          predicates:
+            - Path=/abs/news-service/**
+          uri: ${NEWS_SERVICE_URL:http://localhost:8085}
+
+        - id: currency_service_route
+          predicates:
+            - Path=/abs/currency-service/**
+          uri: ${CURRENCY_SERVICE_URL:http://localhost:8086}
+
+        - id: account_service_route
+          predicates:
+            - Path=/abs/account-service/**
+          uri: ${ACCOUNT_SERVICE_URL:http://localhost:8087}
+
+        - id: document_service_route
+          predicates:
+            - Path=/abs/document-service/**
+          uri: ${DOCUMENT_SERVICE_URL:http://localhost:8088}
+
+        - id: card_service_route
+          predicates:
+            - Path=/abs/card-service/**
+          uri: ${CARD_SERVICE_URL:http://localhost:8089}

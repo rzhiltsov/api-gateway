@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'checkstyle'
+
+    alias(libs.plugins.spring.boot.plugin)
+    alias(libs.plugins.spring.dependency.management)
+    alias(libs.plugins.sonarqube.plugin)
+}
+
+dependencies {
+    implementation(libs.spring.cloud.gateway)
+
+    testImplementation(libs.spring.test)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        html.required = true
+        xml.required = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, include: [
+                    "**/repository/**",
+                    "**/service/**",
+                    "**/controller/**"
+            ])
+        }))
+    }
+}
+
+checkstyle {
+    toolVersion '10.11.0'
+}
+
+sonar {
+    properties {
+        property('sonar.host.url', 'localhost:9000')
+        property('sonar.projectName', 'api-gateway')
+        property('sonar.projectKey', 'api-gateway')
+        property('sonar.qualitygate.wait', 'true')
+        property('sonar.java.binaries', 'build')
+    }
+}
