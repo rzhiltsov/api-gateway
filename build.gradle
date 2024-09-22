@@ -10,8 +10,15 @@ plugins {
 
 dependencies {
     implementation(libs.spring.cloud.gateway)
+    implementation(libs.lombok)
+    implementation(libs.jjwt.api)
+
+    runtimeOnly(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
 
     testImplementation(libs.spring.test)
+
+    annotationProcessor(libs.lombok)
 }
 
 java {

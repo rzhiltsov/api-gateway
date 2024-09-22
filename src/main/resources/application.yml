@@ -55,3 +55,8 @@ spring:
           predicates:
             - Path=/abs/card-service/**
           uri: ${CARD_SERVICE_URL:http://localhost:8089}
+
+jwt:
+  secret: ${JWT_SECRET:mock}
+
+authorization-page: ${API_GATEWAY_URL:http://localhost:8080}/abs/authorizationPage
